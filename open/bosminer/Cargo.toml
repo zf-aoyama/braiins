@@ -7,3 +7,6 @@ members = [
     "bosminer-erupter",
     "bosminer-macros",
 ]
+
+[patch.crates-io]
+bit-set = { path = "../third-party/bit-set-0.2.0" }

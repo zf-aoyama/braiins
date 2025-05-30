@@ -33,6 +33,10 @@ TAG=18
 # we use stable path to be able to clean up properly in case of failed build
 # this is obviously not conductive of concurent builds, if there is ever need of one
 TMPTREE=/tmp/docker-build-$(NAME)-$(TAG)
+# Git reference used for worktree. Defaults to the local bos-devel branch which
+# is available in this repository checkout.  The original Makefile expected a
+# remote branch "origin/bos-devel" which is not present in this environment.
+WORKTREE_REF ?= bos-devel
 
 # prepare image
 build:
@@ -40,7 +44,7 @@ build:
 	# clean up if previous build failed, in a way compatible with older git versions
 	rm -fr $(TMPTREE)
 	git worktree prune
-	git worktree add $(TMPTREE) origin/bos-devel
+	git worktree add $(TMPTREE) $(WORKTREE_REF)
 	# production image
 	docker build $(DOCKER_EXTRA_FLAGS) -f Dockerfile -t $(CI_REGISTRY_IMAGE)/$(NAME):$(TAG) $(TMPTREE)
 	# dev image with sources layer
